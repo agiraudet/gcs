@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Rect.hpp                                           :+:      :+:    :+:   */
+/*   Color.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/08 12:18:17 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/08 14:00:32 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/10 13:49:50 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/10 14:28:44 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RECT_HPP
-# define RECT_HPP
+#ifndef COLOR_HPP
+# define COLOR_HPP
 
 # include "SDL2/SDL.h"
 
-class	Rect
+class	Color
 {
 	public:
-
-		Rect(void);
-		Rect(int x, int y, int w, int h);
-		Rect(Rect const & src);
-		~Rect(void);
+		Color(void);
+		Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+		Color(Uint8 r, Uint8 g, Uint8 b);
+		Color(Color const & src);
+		~Color(void);
 		
-		Rect & operator=(Rect const & rhs);
+	public:
+		Color & operator=(Color const & rhs);
 
-		int			getX(void) const;
-		int			getY(void) const;
-		int			getW(void) const;
-		int			getH(void) const;
-		SDL_Rect*	getSDLRect(void);
-	
-	private:
-		SDL_Rect	_rect;
+	public:
+		Uint8	r;
+		Uint8	g;
+		Uint8	b;
+		Uint8	a;
 };
 
 #endif

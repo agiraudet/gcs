@@ -6,24 +6,25 @@
 #    By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/06 15:43:27 by agiraude          #+#    #+#              #
-#    Updated: 2022/12/09 09:39:05 by agiraude         ###   ########.fr        #
+#    Updated: 2022/12/10 17:59:19 by agiraude         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:=	gui
 
-DEPS		:=	-lSDL2
+DEPS		:=	-lSDL2 -lSDL2_ttf
 
 BUILD_DIR	:=	./build
 
 SRCS_DIR	:=	./srcs
 
 SRCS		:=	main.cpp \
-				Button.cpp \
 				Widget.cpp \
-				Rect.cpp \
-				Frame.cpp \
+				Button.cpp \
+				Color.cpp \
+				Bloc.cpp \
 				Root.cpp \
+				Label.cpp \
 				utils.cpp
 
 OBJS		:=	$(SRCS:%.cpp=$(BUILD_DIR)/%.o)

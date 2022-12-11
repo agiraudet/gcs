@@ -5,82 +5,91 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/08 10:22:37 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/09 13:12:52 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/10 13:57:37 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/11 14:36:56 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Root.hpp"
-#include "Frame.hpp"
+#include "Bloc.hpp"
+#include "utils.hpp"
+#include "Label.hpp"
 #include "Button.hpp"
-#include <unistd.h>
-#include <iostream>
+#include "Root.hpp"
 
-void	waitInput(Root& root)
+void	waitInput(Root& root, bool& loop)
 {
 	SDL_Event	event;
 
-	for(;;)
+	while (loop)
 	{
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT)
 			break;
 		else if (event.type == SDL_KEYDOWN)
 			break;
-		else
-			root.processEvent(event);
+		root.passEvent(event);
+		root.render();
 		SDL_Delay(10);
 	}
 }
 
-void	triggerTest1(void* arg)
+void	toggleLoop(void *arg)
 {
-	Frame*	frame = (Frame*)arg;
+	bool*	loop = (bool*)arg;
 
-	frame->setColor(100,100,100);
-	frame->draw();
-	std::cout << "test clic 1" << std::endl;
-}
-
-void	triggerTest2(void* arg)
-{
-	Frame*	frame = (Frame*)arg;
-
-	frame->setColor(200,200,200);
-	frame->draw();
-	std::cout << "test clic 2" << std::endl;
+	if (*loop)
+		*loop = false;
+	else
+		*loop = true;
 }
 
 int main(void)
 {
 	Root	root;
-	Frame* frame1 = new Frame(Rect(50,50,250,100), "frame1");
-	Button*	butt1 = new Button(Rect(10, 10, 200, 30), "OK1");
-	Button*	butt2 = new Button(Rect(10, 10, 200, 30), "OK2");
-	Button*	butt3 = new Button(Rect(10, 50, 200, 30), "OK3");
+	bool	loop = true;
 
-	butt1->setColor(255,0,0);
-	butt1->setColorAction(0,255,0);
+	Bloc*	bloc = new Bloc(50, 200, 300, 150);
+	root.addWidget(bloc);
 
-	butt3->setColor(255,0,0);
-	butt3->setColorAction(0,0,255);
+	Button	butt3(0, -5, 70, 20);
+	butt3.colorOn = Color(50,50,50);
+	butt3.colorOff = Color(75,75,75);
+	butt3.pos = POSY_BOTTOM | POSX_CENTER;
+	bloc->addWidget(&butt3);
 
-	frame1->addChild(butt1);
-	frame1->addChild(butt3);
-	//frame1->setVis(false);
+	Bloc*	bloc2 = new Bloc(20, 20, 20, 20);
+	bloc2->color = Color(0,255,0);
+	bloc->addWidget(bloc2);
 
-	butt2->setColor(255,0,0);
-	butt2->setColorAction(0,255,0);
+	Label*	label = new Label("Hello world!", 20, 10, 10);
+	label->color = Color(255,0,0);
+	root.addWidget(label);
 
+	Label*	lab2 = new Label("TEST", 16, 10, 30);
+	lab2->color = Color(255,0,0);
+	root.addWidget(lab2);
 
-	butt1->setAction(&triggerTest1, frame1);
-	butt2->setAction(&triggerTest2, frame1);
+	Button*	butt1 = new Button(500, 300, 100, 50);
+	butt1->colorOn = Color(50,50,50);
+	butt1->colorOff = Color(75,75,75);
+	root.addWidget(butt1);
 
-	root.addWidget(butt2);
-	root.addWidget(frame1);
+	Label*	buttLab = new Label("OK", 18, 0, 0);
+	buttLab->color = Color(0,0,0);
+	buttLab->pos = POSX_RIGHT | POSY_BOTTOM;
+	butt1->addWidget(buttLab);
 
-	root.update();
-	waitInput(root);
-	
+	Button*	buttQuit = new Button(335, 420, 100, 50);
+	buttQuit->colorOn = Color(50,50,50);
+	buttQuit->colorOff = Color(75,75,75);
+	buttQuit->onClic(&toggleLoop, (void*)&loop);
+	root.addWidget(buttQuit);
+
+	Label*	quitLab = new Label("Quit", 22, 0, 0);
+	quitLab->color = Color(0,0,0);
+	quitLab->pos = POSX_CENTER | POSY_CENTER;
+	buttQuit->addWidget(quitLab);
+
+	waitInput(root, loop);
 	return 0;
 }

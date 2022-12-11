@@ -5,28 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/08 12:08:33 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/09 12:24:47 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/10 13:42:46 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/11 14:31:26 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Button.hpp"
+#include "utils.hpp"
+#include <iostream>
 
 Button::Button(void)
 {
-	this->_actArg = NULL;
-	this->_actFnct = NULL;
-	this->_active = false;
-	this->_setWatchEvent();
 }
 
-Button::Button(Rect const& rect, std::string const& label)
-: Widget(rect, label)
+Button::Button(int x, int y, int w, int h)
+: Widget(x, y, w, h)
 {
-	this->_actArg = NULL;
-	this->_actFnct = NULL;
-	this->_active = false;
-	this->_setWatchEvent();
+	this->_texOn = NULL;
+	this->_texOff = NULL;
+	this->_clicFnct = NULL;
+	this->_clicArg = NULL;
 }
 
 Button::Button(Button const & src)
@@ -42,54 +40,58 @@ Button & Button::operator=(Button const & rhs)
 {
 	if (this == &rhs)
 		return *this;
-	this->_rect = rhs._rect;
-	this->_label = rhs._label;
-	this->_actColor = rhs._actColor;
-	this->_actArg = rhs._actArg;
-	this->_actFnct = rhs._actFnct;
+	assignRect(rhs._rect, this->_rect);
+	this->colorOn = rhs.colorOn;
+	this->colorOff = rhs.colorOff;
+	this->_clicFnct = rhs._clicFnct;
+	this->_clicArg = rhs._clicArg;
+	this->createTex();
 	return *this;
 }
 
-void	Button::_setWatchEvent(void)
+void	Button::createTex(void)
 {
-	this->_watch[SDL_MOUSEBUTTONDOWN] = INSIDE;
-	this->_watch[SDL_MOUSEBUTTONUP] = ALWAYS;
-}
-
-int	Button::action(SDL_Event const& event)
-{
-	bool	oldState = this->_active;
-	if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
-	{
-		this->_active = true;
-		if (this->_actFnct)
-			this->_actFnct(this->_actArg);
-	}
-	else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
-	{
-		this->_active = false;
-	}
-	if (oldState != this->_active)
-		this->draw();
-	return 0;
+	if (!this->_ren)
+		return;
+	if (!this->_texOn)
+		this->_texOn = SDL_CreateTexture(this->_ren, SDL_PIXELFORMAT_RGBA8888,
+			SDL_TEXTUREACCESS_TARGET, this->_rect.w, this->_rect.h);
+	if (!this->_texOff)
+		this->_texOff = SDL_CreateTexture(this->_ren, SDL_PIXELFORMAT_RGBA8888,
+			SDL_TEXTUREACCESS_TARGET, this->_rect.w, this->_rect.h);
+	this->_tex = this->_texOff;
 }
 
 void	Button::draw(void)
 {
-	if (this->_active)
-		SDL_FillRect(this->_surf, NULL, this->_actColor);
-	else
-		SDL_FillRect(this->_surf, NULL, this->_color);
-	this->_needBlit = true;
+	SDL_SetRenderTarget(this->_ren, this->_texOn);
+	SDL_SetRenderDrawColor(this->_ren, this->colorOn.r, this->colorOn.g, this->colorOn.b, this->colorOn.a);
+	SDL_RenderFillRect(this->_ren, NULL);
+	SDL_SetRenderTarget(this->_ren, this->_texOff);
+	SDL_SetRenderDrawColor(this->_ren, this->colorOff.r, this->colorOff.g, this->colorOff.b, this->colorOff.a);
+	SDL_RenderFillRect(this->_ren, NULL);
+	SDL_SetRenderTarget(this->_ren, NULL);
 }
 
-void	Button::setColorAction(Uint8 r, Uint8 g, Uint8 b)
+void	Button::act(SDL_Event const& event)
 {
-	this->_actColor = SDL_MapRGB(this->_surf->format, r, g, b);
+	if (event.type == SDL_MOUSEBUTTONDOWN
+		&& event.button.button == SDL_BUTTON_LEFT
+		&& collide(event.motion.x, event.motion.y, this->_rect))
+	{
+		this->_tex = this->_texOn;
+		if (this->_clicFnct)
+			this->_clicFnct(this->_clicArg);
+	}
+	else if (event.type == SDL_MOUSEBUTTONUP
+		&& event.button.button == SDL_BUTTON_LEFT)
+	{
+		this->_tex = this->_texOff;
+	}
 }
 
-void	Button::setAction(void (*actFnct)(void* arg), void* arg)
+void	Button::onClic(void (*clicFnct)(void *arg), void* arg)
 {
-	this->_actArg = arg;
-	this->_actFnct = actFnct;
+	this->_clicArg = arg;
+	this->_clicFnct = clicFnct;
 }

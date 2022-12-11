@@ -1,42 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Frame.hpp                                          :+:      :+:    :+:   */
+/*   Label.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/08 12:04:59 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/09 13:12:14 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/10 14:35:00 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/10 18:41:14 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRAME_HPP
-# define FRAME_HPP
+#ifndef LABEL_HPP
+# define LABEL_HPP
 
 # include "Widget.hpp"
-# include <vector>
+# include "Color.hpp"
+# include "SDL2/SDL_ttf.h"
+# include <string>
 
-class	Frame : public Widget
+class	Label : public Widget
 {
 	public:
-
-		Frame(Rect const& rect, std::string const& label);
-		Frame(Frame const & src);
-		~Frame(void);
-		
-		Frame & operator=(Frame const & rhs);
-
-		int		action(SDL_Event const& event);
-		void	draw(void);
-		void	setVis(bool vis);
-		void	addChild(Widget* child);
-		void	update(void);
+		Label(TTF_Font* font, std::string const& text, int x, int y);
+		Label(std::string const& text, int size, int x, int y);
+		~Label(void);
 
 	private:
-		Frame(void);
-		void	_setWatchEvent(void);
-		bool					_visible;
-		std::vector<Widget*>	_childs;
+		Label(void);
+		Label & operator=(Label const & rhs);
+		Label(Label const & src);
+
+	public:
+		void	draw(void);
+
+
+	public:
+		Color		color;
+
+	private:
+		std::string	_text;
+		TTF_Font*	_font;
 };
 
 #endif

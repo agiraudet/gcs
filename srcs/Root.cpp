@@ -5,23 +5,39 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/08 14:12:49 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/09 12:38:55 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/10 14:51:53 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/11 14:32:11 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Root.hpp"
-#include "utils.hpp"
+#include "SDL2/SDL_ttf.h"
 
 Root::Root(void)
-: _win(NULL), _screenSurf(NULL)
+: _win(NULL), _ren(NULL)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 		exit(1);
 	this->_win = SDL_CreateWindow("GUI", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 720, 480, 0);
-	this->_screenSurf = SDL_GetWindowSurface(this->_win);
-	if (!this->_win || !this->_screenSurf)
+	if (!this->_win)
+	{
+		SDL_Quit();
 		exit(2);
+	}
+	this->_ren = SDL_CreateRenderer(this->_win, -1, SDL_RENDERER_ACCELERATED);
+	if (!this->_ren)
+	{
+		SDL_DestroyWindow(this->_win);
+		SDL_Quit();
+		exit(3);
+	}
+	if (TTF_Init() < 0)
+	{
+		SDL_DestroyWindow(this->_win);
+		SDL_DestroyRenderer(this->_ren);
+		SDL_Quit();
+		exit(3);
+	}
 }
 
 Root::Root(Root const & src)
@@ -31,10 +47,9 @@ Root::Root(Root const & src)
 
 Root::~Root(void)
 {
-	for (size_t i = 0; i < this->_widgets.size(); i++)
-		delete this->_widgets[i];
-	if (this->_win)
-		SDL_DestroyWindow(this->_win);
+	TTF_Quit();
+	SDL_DestroyRenderer(this->_ren);
+	SDL_DestroyWindow(this->_win);
 	SDL_Quit();
 }
 
@@ -43,59 +58,31 @@ Root & Root::operator=(Root const & rhs)
 	if (this == &rhs)
 		return *this;
 	this->_win = rhs._win;
-	this->_screenSurf = rhs._screenSurf;
+	this->_ren = rhs._ren;
+	this->_widgets = rhs._widgets;
 	return *this;
 }
 
-void	Root::addWidget(Widget*	widget)
+void	Root::addWidget(Widget* widget)
 {
 	if (!widget)
 		return;
+	widget->setRen(this->_ren);
+	widget->alignPos(NULL);
+	widget->createTex();
 	widget->draw();
 	this->_widgets.push_back(widget);
 }
 
-void	Root::_blitWidget(Widget* widget)
-{
-	SDL_BlitSurface(widget->getSurf(), NULL, this->_screenSurf, widget->getSDLRect());
-	widget->setNeedBlit(false);
-}
-
-void	Root::update(void)
-{
-	bool	updated = false;
-
-	for (size_t i = 0; i < this->_widgets.size(); i++)
-	{
-		if (this->_widgets[i]->getNeedBlit())
-		{
-			this->_blitWidget(this->_widgets[i]);
-			updated = true;
-		}
-	}
-	if (updated)
-		SDL_UpdateWindowSurface(this->_win);
-}
-
-void	Root::processEvent(SDL_Event const& event)
+void	Root::render(void)
 {
 	for (size_t i = 0; i < this->_widgets.size(); i++)
-	{
-		watchEvent	flag = this->_widgets[i]->getWatch(static_cast<SDL_EventType>(event.type));
-		
-		if (flag & NEVER)
-			continue;
-		else if (flag & ALWAYS)
-		{
-			this->_widgets[i]->action(event);
-			continue;
-		}
-		else if (flag & (INSIDE | OUTSIDE))
-		{
-			bool inside = collide(event.motion.x, event.motion.y, this->_widgets[i]);
-			if ((inside && flag & INSIDE) || (!inside && flag & OUTSIDE))
-				this->_widgets[i]->action(event);
-		}
-	}
-	this->update();
+		this->_widgets[i]->render();
+	SDL_RenderPresent(this->_ren);
+}
+
+void	Root::passEvent(SDL_Event const& event)
+{
+	for (size_t i = 0; i < this->_widgets.size(); i++)
+		this->_widgets[i]->passEvent(event);
 }

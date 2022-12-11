@@ -1,43 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Root.hpp                                           :+:      :+:    :+:   */
+/*   Bloc.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/10 13:41:01 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/10 22:30:06 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/10 13:42:59 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/10 17:51:29 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ROOT_HPP
-# define ROOT_HPP
+#ifndef BLOC_HPP
+# define BLOC_HPP
 
-# include "SDL2/SDL.h"
 # include "Widget.hpp"
-# include <vector>
+# include "Color.hpp"
 
-class	Root
+class	Bloc : public Widget
 {
 	public:
-		Root(void);
-		~Root(void);
+		Bloc(int x, int y, int w, int h);
+		Bloc(Bloc const & src);
+		~Bloc(void);
 		
-	private:
-		Root(Root const & src);
-	
-	private:
-		Root & operator=(Root const & rhs);
-
 	public:
-		void	addWidget(Widget* widget);
-		void	render(void);
-		void	passEvent(SDL_Event const& event);
+		Bloc & operator=(Bloc const & rhs);
+	
+	public:
+		void	draw(void);
 
 	private:
-		SDL_Window*				_win;
-		SDL_Renderer*			_ren;
-		std::vector<Widget*>	_widgets;
+		Bloc(void);
+	
+	public:
+		Color	color;
 };
 
 #endif

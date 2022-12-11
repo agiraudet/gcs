@@ -5,24 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/04 18:05:30 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/10 10:24:01 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/10 13:31:06 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/11 14:35:40 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Widget.hpp"
+#include "utils.hpp"
+
+#include <iostream>
 
 Widget::Widget(void)
-: _needBlit(true), _label("none"), _tex(NULL)
+: pos(POS_NONE), _tex(NULL), _ren(NULL)
 {
-	this->setColor(255, 255, 255);
 }
 
-Widget::Widget(Rect const& rect, std::string const& label)
-: _needBlit(true), _rect(rect), _label(label), _tex(NULL)
+Widget::Widget(int x, int y)
+: pos(POS_NONE), _tex(NULL), _ren(NULL)
 {
-	this->_surf = SDL_CreateRGBSurface(0, rect.getW(), rect.getH(), 32, 0,0,0,0);
-	this->setColor(255, 255, 255);
+	setRect(this->_rect, x, y, 0, 0);
+}
+
+Widget::Widget(int x, int y, int w, int h)
+: pos(POS_NONE), _tex(NULL), _ren(NULL)
+{
+	setRect(this->_rect, x, y, w, h);
 }
 
 Widget::Widget(Widget const & src)
@@ -32,78 +39,86 @@ Widget::Widget(Widget const & src)
 
 Widget::~Widget(void)
 {
-	SDL_FreeSurface(this->_surf);
+	if (this->_tex)
+		SDL_DestroyTexture(this->_tex);
 }
 
 Widget & Widget::operator=(Widget const & rhs)
 {
 	if (this == &rhs)
 		return *this;
-	this->_needBlit = rhs._needBlit;
-	this->_rect = rhs._rect;
-	this->_label = rhs._label;
-	this->_color = rhs._color;
-	this->_surf = rhs._surf;
-	this->_watch = rhs._watch;
+	assignRect(rhs._rect, this->_rect);
+	this->_ren = rhs._ren;
+	this->pos = rhs.pos;
+	this->createTex();
 	return *this;
 }
 
-Rect const&	Widget::getRect(void) const
+void	Widget::createTex(void)
 {
-	return this->_rect;
+	if (!this->_ren)
+		return;
+	if (!this->_tex)
+		this->_tex = SDL_CreateTexture(this->_ren, SDL_PIXELFORMAT_RGBA8888,
+			SDL_TEXTUREACCESS_TARGET, this->_rect.w, this->_rect.h);
 }
 
-SDL_Rect*	Widget::getSDLRect(void)
+void	Widget::render()
 {
-	return this->_rect.getSDLRect();
+	SDL_RenderCopy(this->_ren, this->_tex, NULL, &this->_rect);
+	for (size_t i = 0; i < this->_widgets.size(); i++)
+		this->_widgets[i]->render();
 }
 
-void	Widget::setRect(Rect const& rect)
+void	Widget::setRen(SDL_Renderer* ren)
 {
-	this->_rect = rect;
+	this->_ren = ren;
 }
 
-std::string const&	Widget::getLabel(void) const
+void	Widget::addWidget(Widget* widget)
 {
-	return this->_label;
+	if (!widget)
+		return;
+	widget->setRen(this->_ren);
+	widget->alignPos(&this->_rect);
+	widget->createTex();
+	widget->draw();
+	this->_widgets.push_back(widget);
 }
 
-void	Widget::setLabel(std::string const& label)
+void	Widget::act(SDL_Event const& event)
 {
-	this->_label = label;
 }
 
-Uint32	Widget::getColor(void) const
+void	Widget::passEvent(SDL_Event const& event)
 {
-	return this->_color;
+	this->act(event);
+	for (size_t i = 0; i < this->_widgets.size(); i++)
+		this->_widgets[i]->passEvent(event);
 }
 
-void	Widget::setColor(Uint8 r, Uint8 g, Uint8 b)
+void	Widget::alignPos(SDL_Rect* parent)
 {
-	this->_color = SDL_MapRGB(this->_surf->format, r, g, b);
-}
+	SDL_Rect	empty = {0,0,0,0};
 
-SDL_Surface*	Widget::getSurf(void)
-{
-	return this->_surf;
-}
+	if (!parent)
+		parent = &empty;
 
-watchEvent 	Widget::getWatch(SDL_EventType const& eType) const
-{
-	std::map<SDL_EventType, watchEvent>::const_iterator	it;
+	if (this->pos & POSX_LEFT)
+		this->_rect.x += parent->x;
+	else if (this->pos & POSX_CENTER)
+		this->_rect.x += parent->x + (parent->w / 2 - this->_rect.w / 2);
+	else if (this->pos & POSX_RIGHT)
+		this->_rect.x += parent->x + parent->w - this->_rect.w;
+	else
+		this->_rect.x += parent->x;
 
-	it = this->_watch.find(eType);
-	if (it == this->_watch.end())
-		return NEVER;
-	return it->second;
-}
-
-bool	Widget::getNeedBlit(void) const
-{
-	return this->_needBlit;
-}
-
-void	Widget::setNeedBlit(bool need)
-{
-	this->_needBlit = need;
+	if (this->pos & POSY_TOP)
+		this->_rect.y += parent->y;
+	else if (this->pos & POSY_CENTER)
+		this->_rect.y += parent->y + (parent->h / 2 - this->_rect.h / 2);
+	else if (this->pos & POSY_BOTTOM)
+		this->_rect.y += parent->y + parent->h - this->_rect.h;
+	else
+		this->_rect.y += parent->y;
 }

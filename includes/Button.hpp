@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/08 12:04:59 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/09 10:52:50 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/10 13:42:59 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/11 14:28:52 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,36 @@
 # define Button_HPP
 
 # include "Widget.hpp"
-# include <vector>
+# include "Color.hpp"
 
 class	Button : public Widget
 {
 	public:
-
-		Button(Rect const& rect, std::string const& label);
+		Button(int x, int y, int w, int h);
 		Button(Button const & src);
 		~Button(void);
 		
+	public:
 		Button & operator=(Button const & rhs);
-
-		int		action(SDL_Event const& event);
+	
+	public:
 		void	draw(void);
-		void	setColorAction(Uint8 r, Uint8 g, Uint8 b);
-		void	setAction(void (*actFnct)(void* arg), void* arg);
+		void	createTex(void);
+		void	act(SDL_Event const& event);
+		void	onClic(void (*clicFnct)(void *arg), void* arg);
 
 	private:
 		Button(void);
-		void	_setWatchEvent(void);
-
-		Uint32	_actColor;
-		bool	_active;
-		void*	_actArg;
-		void	(*_actFnct)(void* arg);
+	
+	private:
+		SDL_Texture*	_texOn;
+		SDL_Texture*	_texOff;
+		void*			_clicArg;
+		void			(*_clicFnct)(void* arg);
+	
+	public:
+		Color	colorOff;
+		Color	colorOn;
 };
 
 #endif
