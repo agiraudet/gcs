@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:42:46 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 14:31:26 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/11 15:37:16 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ Button::Button(int x, int y, int w, int h)
 	this->_texOff = NULL;
 	this->_clicFnct = NULL;
 	this->_clicArg = NULL;
+	this->colorOn = Color(50,50,50);
+	this->colorOff = Color(75,75,75);
 }
 
 Button::Button(Button const & src)

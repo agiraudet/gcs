@@ -5,39 +5,36 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/10 13:41:01 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/10 22:30:06 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/11 15:13:35 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/11 15:24:47 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ROOT_HPP
 # define ROOT_HPP
 
-# include "SDL2/SDL.h"
-# include "Widget.hpp"
-# include <vector>
+# include "Elem.hpp"
+# include "SDL2/SDL_ttf.h"
 
-class	Root
+class	Root : public Elem
 {
 	public:
 		Root(void);
+		Root(int x, int y);
 		~Root(void);
-		
+	
+	public:
+		void	render(void);
+
 	private:
 		Root(Root const & src);
-	
-	private:
 		Root & operator=(Root const & rhs);
 
-	public:
-		void	addWidget(Widget* widget);
-		void	render(void);
-		void	passEvent(SDL_Event const& event);
-
 	private:
-		SDL_Window*				_win;
-		SDL_Renderer*			_ren;
-		std::vector<Widget*>	_widgets;
+		void	_createWin(void);
+	
+	private:
+		SDL_Window*	_win;
 };
 
 #endif

@@ -6,15 +6,17 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:23:50 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 14:41:22 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/11 15:11:18 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WIDGET_HPP
-# define WIDGET_HPP
+#ifndef ELEM_HPP
+# define ELEM_HPP
 
 # include "SDL2/SDL.h"
 # include <vector>
+
+class	Widget;
 
 class	Elem
 {
@@ -29,10 +31,12 @@ class	Elem
 		Elem & operator=(Elem const & rhs);
 
 	public:
-		void			addWidget(Widget* widget);
-		void			setRen(SDL_Renderer *ren);
-		void			passEvent(SDL_Event const& event);
-		void			alignPos(SDL_Rect* parent);
+		virtual void	render(void) = 0;
+		virtual void	act(SDL_Event const& event);
+		void	addWidget(Widget* widget);
+		void	setRen(SDL_Renderer *ren);
+		void	passEvent(SDL_Event const& event);
+		void	alignPos(SDL_Rect* parent);
 	
 	public:
 		int	pos;

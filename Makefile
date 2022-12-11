@@ -6,11 +6,11 @@
 #    By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/06 15:43:27 by agiraude          #+#    #+#              #
-#    Updated: 2022/12/10 17:59:19 by agiraude         ###   ########.fr        #
+#    Updated: 2022/12/11 15:58:08 by agiraude         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		:=	gui
+NAME		:=	example
 
 DEPS		:=	-lSDL2 -lSDL2_ttf
 
@@ -18,7 +18,8 @@ BUILD_DIR	:=	./build
 
 SRCS_DIR	:=	./srcs
 
-SRCS		:=	main.cpp \
+SRCS		:=	example.cpp \
+				Elem.cpp \
 				Widget.cpp \
 				Button.cpp \
 				Color.cpp \
@@ -33,7 +34,7 @@ INC_DIRS	:=	./includes
 
 INC_FLAGS	:=	$(addprefix -I, $(INC_DIRS))
 
-CXXFLAGS	:=	-MD -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -Wno-unused-private-field -g $(INC_FLAGS)
+CXXFLAGS	:=	-MD -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -Wno-unused-private-field $(INC_FLAGS)
 
 CXX			:=	clang++
 

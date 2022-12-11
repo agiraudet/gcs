@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   example.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:57:37 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 14:36:56 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/11 16:00:39 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	waitInput(Root& root, bool& loop)
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT)
 			break;
-		else if (event.type == SDL_KEYDOWN)
-			break;
 		root.passEvent(event);
 		root.render();
 		SDL_Delay(10);
@@ -43,50 +41,69 @@ void	toggleLoop(void *arg)
 		*loop = true;
 }
 
+void	changeColor(void *arg)
+{
+	static int	i = 0;
+	Bloc*	bloc = (Bloc*)arg;
+
+	if (i % 2)
+		bloc->color = Color(0,255,0);
+	else
+		bloc->color = Color(0,0,255);
+	bloc->draw();
+	i++;
+}
+
 int main(void)
 {
-	Root	root;
 	bool	loop = true;
+	Root	root(720, 480);
 
-	Bloc*	bloc = new Bloc(50, 200, 300, 150);
-	root.addWidget(bloc);
+	Label	title("GCSI EXAMPLE", 25, 10, 0);
+	title.color = Color(255,255,255);
+	title.pos = POSX_CENTER | POSY_TOP;
+	root.addWidget(&title);
 
-	Button	butt3(0, -5, 70, 20);
-	butt3.colorOn = Color(50,50,50);
-	butt3.colorOff = Color(75,75,75);
-	butt3.pos = POSY_BOTTOM | POSX_CENTER;
-	bloc->addWidget(&butt3);
+	Bloc	bloc1(10, 0, 200, 400);
+	bloc1.color = Color(200,200,200);
+	bloc1.pos = POSY_CENTER | POSX_LEFT;
+	root.addWidget(&bloc1);
 
-	Bloc*	bloc2 = new Bloc(20, 20, 20, 20);
-	bloc2->color = Color(0,255,0);
-	bloc->addWidget(bloc2);
+	Label	bloc1Label("Bloc 1", 20, 0, 10);
+	bloc1Label.color = Color(0,0,0);
+	bloc1Label.pos = POSY_TOP | POSX_CENTER;
+	bloc1.addWidget(&bloc1Label);
 
-	Label*	label = new Label("Hello world!", 20, 10, 10);
-	label->color = Color(255,0,0);
-	root.addWidget(label);
+	Bloc	bloc2(0, 0, 50, 50);
+	bloc2.color = Color(255,255,255);
+	bloc2.pos = POSX_CENTER | POSY_CENTER;
+	root.addWidget(&bloc2);
 
-	Label*	lab2 = new Label("TEST", 16, 10, 30);
-	lab2->color = Color(255,0,0);
-	root.addWidget(lab2);
+	int	yPos = 60;
+	for (int i = 0; i < 5; i++)
+	{
+		Button*	butt = new Button(0, yPos, 100, 20);
+		butt->pos = POSY_TOP | POSX_CENTER;
+		butt->onClic(&changeColor, (void*)&bloc2);
+		bloc1.addWidget(butt);
 
-	Button*	butt1 = new Button(500, 300, 100, 50);
-	butt1->colorOn = Color(50,50,50);
-	butt1->colorOff = Color(75,75,75);
-	root.addWidget(butt1);
+		Label	*lab = new Label("button", 16, 0, 0);
+		lab->color = Color(0,0,0);
+		lab->pos = POSY_CENTER | POSX_CENTER;
+		butt->addWidget(lab);
 
-	Label*	buttLab = new Label("OK", 18, 0, 0);
-	buttLab->color = Color(0,0,0);
-	buttLab->pos = POSX_RIGHT | POSY_BOTTOM;
-	butt1->addWidget(buttLab);
+		yPos += 25;
+	}
 
-	Button*	buttQuit = new Button(335, 420, 100, 50);
+	Button*	buttQuit = new Button(0, -10, 100, 50);
+	buttQuit->pos = POSX_CENTER | POSY_BOTTOM;
 	buttQuit->colorOn = Color(50,50,50);
-	buttQuit->colorOff = Color(75,75,75);
+	buttQuit->colorOff = Color(30,30,30);
 	buttQuit->onClic(&toggleLoop, (void*)&loop);
 	root.addWidget(buttQuit);
 
 	Label*	quitLab = new Label("Quit", 22, 0, 0);
-	quitLab->color = Color(0,0,0);
+	quitLab->color = Color(255,0,0);
 	quitLab->pos = POSX_CENTER | POSY_CENTER;
 	buttQuit->addWidget(quitLab);
 
