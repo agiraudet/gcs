@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:42:59 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 14:28:52 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/11 19:42:00 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,17 @@ class	Button : public Widget
 		
 	public:
 		Button & operator=(Button const & rhs);
-	
+
 	public:
-		void	draw(void);
-		void	createTex(void);
 		void	act(SDL_Event const& event);
 		void	onClic(void (*clicFnct)(void *arg), void* arg);
 
 	private:
 		Button(void);
+	
+	private:
+		void	_draw(void);
+		void	_createTex(void);
 	
 	private:
 		SDL_Texture*	_texOn;

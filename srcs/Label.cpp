@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:36:44 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 13:01:34 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/12 10:51:41 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ Label::Label(std::string const& text, int size, int x, int y)
 	int	h;
 
 	TTF_SizeText(this->_font, text.c_str(), &w, &h);
-	setRect(this->_rect, x, y, w, h);
+	setRect(this->_offset, x, y, w, h);
 }
 
 Label::Label(Label const & src)
@@ -48,9 +48,11 @@ Label & Label::operator=(Label const & rhs)
 	return *this;
 }
 
-#include <iostream>
+void	Label::_draw(void)
+{
+}
 
-void	Label::draw(void)
+void	Label::_createTex(void)
 {
 	SDL_Color sdlColor = {this->color.r, this->color.g, this->color.b, this->color.a};
 

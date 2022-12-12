@@ -6,14 +6,14 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:31:06 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 15:11:44 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/12 11:35:47 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Widget.hpp"
 
 Widget::Widget(void)
-: _tex(NULL)
+: _tex(NULL), _visible(true)
 {
 }
 
@@ -21,12 +21,14 @@ Widget::Widget(int x, int y)
 : Elem(x, y)
 {
 	this->_tex = NULL;
+	this->_visible = true;
 }
 
 Widget::Widget(int x, int y, int w, int h)
 : Elem(x, y, w, h)
 {
 	this->_tex = NULL;
+	this->_visible = true;
 }
 
 Widget::Widget(Widget const & src)
@@ -44,21 +46,53 @@ Widget & Widget::operator=(Widget const & rhs)
 {
 	if (this == &rhs)
 		return *this;
+	this->_tex = rhs._tex;
+	this->_visible = rhs._visible;
 	return *this;
 }
 
-void	Widget::createTex(void)
+void	Widget::setVis(bool vis)
+{
+	this->_visible = vis;
+}
+
+void	Widget::setVisAll(bool vis)
+{
+	this->_visible = vis;
+	for (size_t i = 0; i < this->_widgets.size(); i++)
+		this->_widgets[i]->setVis(vis);
+}
+
+bool	Widget::getVis(void) const
+{
+	return this->_visible;
+}
+
+void	Widget::redraw(void)
+{
+	if (!this->_tex)
+		this->_createTex();
+	this->_draw();
+}
+
+void	Widget::_createTex(void)
 {
 	if (!this->_ren)
 		return;
 	if (!this->_tex)
 		this->_tex = SDL_CreateTexture(this->_ren, SDL_PIXELFORMAT_RGBA8888,
-			SDL_TEXTUREACCESS_TARGET, this->_rect.w, this->_rect.h);
+			SDL_TEXTUREACCESS_TARGET, this->_offset.w, this->_offset.h);
 }
 
 void	Widget::render()
 {
-	SDL_RenderCopy(this->_ren, this->_tex, NULL, &this->_rect);
+	if (!this->_tex)
+	{
+		this->_createTex();
+		this->_draw();
+	}
+	if (this->_visible)
+		SDL_RenderCopy(this->_ren, this->_tex, NULL, &this->_rect);
 	for (size_t i = 0; i < this->_widgets.size(); i++)
 		this->_widgets[i]->render();
 }

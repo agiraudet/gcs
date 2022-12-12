@@ -6,32 +6,30 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:31:06 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 15:15:38 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/12 12:32:16 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Elem.hpp"
 #include "Widget.hpp"
+#include "Elem.hpp"
 #include "utils.hpp"
-
-#include <iostream>
 
 Elem::Elem(void)
 : pos(POS_NONE), _ren(NULL)
 {
-	setRect(this->_rect, 0, 0, 0, 0);
+	setRect(this->_offset, 0, 0, 0, 0);
 }
 
 Elem::Elem(int x, int y)
 : pos(POS_NONE), _ren(NULL)
 {
-	setRect(this->_rect, x, y, 0, 0);
+	setRect(this->_offset, x, y, 0, 0);
 }
 
 Elem::Elem(int x, int y, int w, int h)
 : pos(POS_NONE), _ren(NULL)
 {
-	setRect(this->_rect, x, y, w, h);
+	setRect(this->_offset, x, y, w, h);
 }
 
 Elem::Elem(Elem const & src)
@@ -48,14 +46,28 @@ Elem & Elem::operator=(Elem const & rhs)
 	if (this == &rhs)
 		return *this;
 	assignRect(rhs._rect, this->_rect);
+	assignRect(rhs._offset, this->_offset);
 	this->_ren = rhs._ren;
 	this->pos = rhs.pos;
 	return *this;
 }
 
+SDL_Renderer* Elem::getRen(void)
+{
+	return this->_ren;
+}
+
 void	Elem::setRen(SDL_Renderer* ren)
 {
 	this->_ren = ren;
+	for (size_t i  = 0; i < this->_widgets.size(); i++)
+		this->_widgets[i]->setRen(ren);
+}
+
+void	Elem::resize(int w, int h)
+{
+	this->_offset.w = w;
+	this->_offset.h = h;
 }
 
 void	Elem::addWidget(Widget* widget)
@@ -64,8 +76,6 @@ void	Elem::addWidget(Widget* widget)
 		return;
 	widget->setRen(this->_ren);
 	widget->alignPos(&this->_rect);
-	widget->createTex();
-	widget->draw();
 	this->_widgets.push_back(widget);
 }
 
@@ -82,6 +92,7 @@ void	Elem::alignPos(SDL_Rect* parent)
 
 	if (!parent)
 		parent = &empty;
+	assignRect(this->_offset, this->_rect);
 
 	if (this->pos & POSX_LEFT)
 		this->_rect.x += parent->x;
@@ -100,6 +111,9 @@ void	Elem::alignPos(SDL_Rect* parent)
 		this->_rect.y += parent->y + parent->h - this->_rect.h;
 	else
 		this->_rect.y += parent->y;
+
+	for (size_t i = 0; i < this->_widgets.size(); i++)
+		this->_widgets[i]->alignPos(&this->_rect);
 }
 
 void	Elem::act(SDL_Event const& event)

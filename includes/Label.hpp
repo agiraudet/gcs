@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:35:00 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/10 18:41:14 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/11 22:19:15 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ class	Label : public Widget
 		Label & operator=(Label const & rhs);
 		Label(Label const & src);
 
-	public:
-		void	draw(void);
+	private:
+		void	_draw(void);
+		void	_createTex(void);
 
 
 	public:

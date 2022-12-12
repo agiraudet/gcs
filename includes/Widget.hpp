@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:23:50 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 15:11:20 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/12 11:50:43 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,18 @@ class	Widget : public Elem
 
 	public:
 		void			render(void);
-		void			passEvent(SDL_Event const& event);
-		virtual void	createTex(void);
-		virtual void	draw(void) = 0;
+		void			redraw(void);
+		void			setVis(bool vis);
+		void			setVisAll(bool vis);
+		bool			getVis(void) const;
+
+	protected:
+		virtual void	_createTex(void);
+		virtual void	_draw(void) = 0;
 	
 	protected:
-		SDL_Texture*			_tex;
+		SDL_Texture*	_tex;
+		bool			_visible;
 };
 
 #endif

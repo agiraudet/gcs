@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:42:46 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/10 15:22:28 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/11 19:40:41 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ Bloc & Bloc::operator=(Bloc const & rhs)
 	return *this;
 }
 
-void	Bloc::draw(void)
+void	Bloc::_draw(void)
 {
 	SDL_SetRenderTarget(this->_ren, this->_tex);
 	SDL_SetRenderDrawColor(this->_ren, this->color.r, this->color.g, this->color.b, this->color.a);

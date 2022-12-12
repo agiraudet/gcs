@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:42:46 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 15:37:16 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/11 19:42:25 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ Button & Button::operator=(Button const & rhs)
 	this->colorOff = rhs.colorOff;
 	this->_clicFnct = rhs._clicFnct;
 	this->_clicArg = rhs._clicArg;
-	this->createTex();
+	this->_createTex();
 	return *this;
 }
 
-void	Button::createTex(void)
+void	Button::_createTex(void)
 {
 	if (!this->_ren)
 		return;
@@ -64,7 +64,7 @@ void	Button::createTex(void)
 	this->_tex = this->_texOff;
 }
 
-void	Button::draw(void)
+void	Button::_draw(void)
 {
 	SDL_SetRenderTarget(this->_ren, this->_texOn);
 	SDL_SetRenderDrawColor(this->_ren, this->colorOn.r, this->colorOn.g, this->colorOn.b, this->colorOn.a);

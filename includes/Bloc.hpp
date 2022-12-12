@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:42:59 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/10 17:51:29 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/11 19:40:55 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ class	Bloc : public Widget
 	public:
 		Bloc & operator=(Bloc const & rhs);
 	
-	public:
-		void	draw(void);
+	private:
+		void	_draw(void);
 
 	private:
 		Bloc(void);

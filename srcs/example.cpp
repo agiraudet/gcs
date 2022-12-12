@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:57:37 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 16:00:39 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/12 13:03:23 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "Label.hpp"
 #include "Button.hpp"
 #include "Root.hpp"
+#include <iostream>
 
 void	waitInput(Root& root, bool& loop)
 {
@@ -46,12 +47,19 @@ void	changeColor(void *arg)
 	static int	i = 0;
 	Bloc*	bloc = (Bloc*)arg;
 
-	if (i % 2)
+	if (i)
 		bloc->color = Color(0,255,0);
 	else
 		bloc->color = Color(0,0,255);
-	bloc->draw();
-	i++;
+	bloc->redraw();
+	i ^= 1;
+}
+
+void	toggleVis(void*arg)
+{
+	Widget*	widget = (Widget*)arg;
+
+	widget->setVisAll(!widget->getVis());
 }
 
 int main(void)
@@ -70,7 +78,7 @@ int main(void)
 	root.addWidget(&bloc1);
 
 	Label	bloc1Label("Bloc 1", 20, 0, 10);
-	bloc1Label.color = Color(0,0,0);
+	bloc1Label.color = Color(255,0,255);
 	bloc1Label.pos = POSY_TOP | POSX_CENTER;
 	bloc1.addWidget(&bloc1Label);
 
@@ -95,17 +103,44 @@ int main(void)
 		yPos += 25;
 	}
 
-	Button*	buttQuit = new Button(0, -10, 100, 50);
-	buttQuit->pos = POSX_CENTER | POSY_BOTTOM;
-	buttQuit->colorOn = Color(50,50,50);
-	buttQuit->colorOff = Color(30,30,30);
-	buttQuit->onClic(&toggleLoop, (void*)&loop);
-	root.addWidget(buttQuit);
+	Bloc	bloc4(-5, 0, 200, 400);
+	bloc4.color = Color(200,100,0);
+	bloc4.setVis(false);
+	bloc4.pos = POSX_RIGHT | POSY_CENTER;
+	root.addWidget(&bloc4);
 
-	Label*	quitLab = new Label("Quit", 22, 0, 0);
+	Label	bloc4Label("Bloc 2", 20, 0, -10);
+	bloc4Label.color = Color(0,255,0);
+	bloc4Label.pos = POSY_BOTTOM | POSX_CENTER;
+	bloc4Label.setVis(false);
+	bloc4.addWidget(&bloc4Label);
+
+	Button*	buttToggle = new Button(0, -10, 100, 50);
+	buttToggle->pos = POSX_CENTER | POSY_BOTTOM;
+	buttToggle->colorOn = Color(50,50,50);
+	buttToggle->colorOff = Color(30,30,30);
+	buttToggle->onClic(&toggleVis, (void*)&bloc4);
+	root.addWidget(buttToggle);
+
+	Label*	quitLab = new Label("toggle", 22, 0, 0);
 	quitLab->color = Color(255,0,0);
 	quitLab->pos = POSX_CENTER | POSY_CENTER;
-	buttQuit->addWidget(quitLab);
+	buttToggle->addWidget(quitLab);
+
+
+	Button quit(-5,5,30,30);
+	quit.colorOn = Color(130,130,130);
+	quit.colorOff = Color(155,150,150);
+	quit.pos = POSX_RIGHT | POSY_TOP;
+	quit.onClic(&toggleLoop, (void*)&loop);
+	
+	Label	b3lab("X", 28, 0, 0);
+	b3lab.pos = POSX_CENTER | POSY_CENTER;
+	b3lab.color = Color(0,0,0);
+
+	root.addWidget(&quit);
+	quit.addWidget(&b3lab);
+
 
 	waitInput(root, loop);
 	return 0;
