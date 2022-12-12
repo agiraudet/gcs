@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:36:44 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/12 10:51:41 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/12 17:09:36 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,9 @@ Label::Label(void)
 Label::Label(std::string const& text, int size, int x, int y)
 {
 	this->_text = text;
-	this->_font = TTF_OpenFont("futuram.ttf", size);
-
-	int	w;
-	int	h;
-
-	TTF_SizeText(this->_font, text.c_str(), &w, &h);
-	setRect(this->_offset, x, y, w, h);
+	this->_size = size;
+	this->_font = TTF_OpenFont("ttf/futuram.ttf", size);
+	this->_resizeFromText();
 }
 
 Label::Label(Label const & src)
@@ -45,7 +41,19 @@ Label & Label::operator=(Label const & rhs)
 	this->_text = rhs._text;
 	this->color = rhs.color;
 	this->_font = rhs._font;
+	this->_size = rhs._size;
 	return *this;
+}
+
+void	Label::_resizeFromText(void)
+{
+	int	w;
+	int h;
+
+	TTF_SizeText(this->_font, this->_text.c_str(), &w, &h);
+	this->_offset.w = w;
+	this->_rect.w = w;
+	this->_offset.h = h;
 }
 
 void	Label::_draw(void)
@@ -61,4 +69,10 @@ void	Label::_createTex(void)
 		SDL_DestroyTexture(this->_tex);
 	this->_tex = SDL_CreateTextureFromSurface(this->_ren, surfTxt);
 	SDL_FreeSurface(surfTxt);
+	this->_resizeFromText();
+}
+
+void	Label::setText(std::string const& text)
+{
+	this->_text = text;
 }

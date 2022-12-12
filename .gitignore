@@ -2,3 +2,5 @@ build
 test
 example
 gui
+doc
+doxyconf

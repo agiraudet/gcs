@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:31:06 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/12 12:32:16 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/12 16:10:47 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,21 @@ Elem::Elem(void)
 : pos(POS_NONE), _ren(NULL)
 {
 	setRect(this->_offset, 0, 0, 0, 0);
+	assignRect(this->_offset, this->_rect);
 }
 
 Elem::Elem(int x, int y)
 : pos(POS_NONE), _ren(NULL)
 {
 	setRect(this->_offset, x, y, 0, 0);
+	assignRect(this->_offset, this->_rect);
 }
 
 Elem::Elem(int x, int y, int w, int h)
 : pos(POS_NONE), _ren(NULL)
 {
 	setRect(this->_offset, x, y, w, h);
+	assignRect(this->_offset, this->_rect);
 }
 
 Elem::Elem(Elem const & src)

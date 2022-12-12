@@ -1,50 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Label.hpp                                          :+:      :+:    :+:   */
+/*   TextField.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:35:00 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/12 17:06:53 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/12 16:48:56 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LABEL_HPP
-# define LABEL_HPP
+#ifndef TextField_HPP
+# define TextField_HPP
 
-# include "Widget.hpp"
-# include "Color.hpp"
+# include "Label.hpp"
 # include "SDL2/SDL_ttf.h"
 # include <string>
 
-class	Label : public Widget
+class	TextField : public Label
 {
 	public:
-		Label(TTF_Font* font, std::string const& text, int x, int y);
-		Label(std::string const& text, int size, int x, int y);
-		~Label(void);
+		TextField(std::string const& text, int size, size_t maxC, int x, int y);
+		~TextField(void);
 
 	private:
-		Label(void);
-		Label & operator=(Label const & rhs);
-		Label(Label const & src);
-
-	protected:
-		void	_draw(void);
-		void	_createTex(void);
-		void	_resizeFromText(void);
-
+		TextField(void);
+		TextField & operator=(TextField const & rhs);
+		TextField(TextField const & src);
+	
+	private:
+		void	_proccesTextInput(SDL_Event const& event);
+		void	_setActive(bool state);
+	
 	public:
-		void	setText(std::string const& text);
-
-	public:
-		Color		color;
-
-	protected:
-		int			_size;
-		std::string	_text;
-		TTF_Font*	_font;
+		void	act(SDL_Event const& event);
+	
+	private:
+		bool	_active;
+		size_t	_maxC;
+		SDL_Rect	_hitbox;
 };
 
 #endif
