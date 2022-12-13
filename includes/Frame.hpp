@@ -1,39 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   TextField.hpp                                      :+:      :+:    :+:   */
+/*   Frame.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/13 10:41:11 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/13 11:24:46 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/10 13:42:59 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/13 10:54:49 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEXTFIELD_HPP
-# define TEXTFIELD_HPP
+#ifndef FRAME_HPP
+# define FRAME_HPP
 
-#include "Frame.hpp"
-#include "TextInput.hpp"
-#include <string>
+# include "Widget.hpp"
+# include "Color.hpp"
 
-class	TextField : public Frame
+class	Frame : public Widget
 {
 	public:
-		TextField(int x, int y, int w, int h);
-		TextField(TextField const & src);
-		~TextField(void);
+		Frame(int x, int y, int w, int h);
+		Frame(Frame const & src);
+		~Frame(void);
 		
 	public:
-		TextField & operator=(TextField const & rhs);
-
-	public:
-		void	onValidation(void (*validateFnct)(std::string const& text, void* arg), void* arg);
-	private:
-		TextField(void);
+		Frame & operator=(Frame const & rhs);
 	
 	private:
-		TextInput*	_input;
+		void	_draw(void);
+
+	protected:
+		Frame(void);
+	
+	public:
+		Color	color;
 };
 
 #endif

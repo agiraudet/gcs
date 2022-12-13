@@ -6,7 +6,7 @@
 #    By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/06 15:43:27 by agiraude          #+#    #+#              #
-#    Updated: 2022/12/12 16:02:10 by agiraude         ###   ########.fr        #
+#    Updated: 2022/12/13 10:54:30 by agiraude         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,9 @@ SRCS		:=	example.cpp \
 				Bloc.cpp \
 				Root.cpp \
 				Label.cpp \
+				TextInput.cpp \
 				TextField.cpp \
+				Frame.cpp \
 				utils.cpp
 
 OBJS		:=	$(SRCS:%.cpp=$(BUILD_DIR)/%.o)

@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:57:37 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/12 17:07:38 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/13 11:22:38 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 #include "utils.hpp"
 #include "Label.hpp"
 #include "Button.hpp"
+#include "Frame.hpp"
 #include "Root.hpp"
 #include "TextField.hpp"
 #include <iostream>
+#include <string>
 
 void	waitInput(Root& root, bool& loop)
 {
@@ -61,6 +63,12 @@ void	toggleVis(void*arg)
 	Widget*	widget = (Widget*)arg;
 
 	widget->setVisAll(!widget->getVis());
+}
+
+
+void	printText(std::string const& text, void* arg)
+{
+	std::cout << text << std::endl;
 }
 
 int main(void)
@@ -128,7 +136,6 @@ int main(void)
 	quitLab->pos = POSX_CENTER | POSY_CENTER;
 	buttToggle->addWidget(quitLab);
 
-
 	Button quit(-5,5,30,30);
 	quit.colorOn = Color(130,130,130);
 	quit.colorOff = Color(155,150,150);
@@ -142,16 +149,11 @@ int main(void)
 	root.addWidget(&quit);
 	quit.addWidget(&b3lab);
 
-	Bloc	text(0, 180, 150, 26);
-	text.color = Color(150,150,150);
+	TextField	text(0, 180, 150, 26);
+	text.color = Color (255,255,0);
 	text.pos = POSX_CENTER;
+	text.onValidation(&printText, NULL);
 	root.addWidget(&text);
-
-	TextField	field(" ",24, 12, 5, 0);
-	field.color = Color(255,255,255);
-	field.pos = POSX_LEFT | POSY_CENTER;
-	field.setText("field");
-	text.addWidget(&field);
 
 	waitInput(root, loop);
 	return 0;

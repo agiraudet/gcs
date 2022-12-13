@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:36:44 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/12 17:09:36 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/13 11:04:03 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Label::Label(std::string const& text, int size, int x, int y)
 {
 	this->_text = text;
 	this->_size = size;
-	this->_font = TTF_OpenFont("ttf/futuram.ttf", size);
+	this->_font = TTF_OpenFont("ttf/UbuntuMono-R.ttf", size);
 	this->_resizeFromText();
 }
 
