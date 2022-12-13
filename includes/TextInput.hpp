@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:35:00 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/13 11:19:32 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/13 13:33:35 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class	TextInput : public Label
 	private:
 		void	_proccesTextInput(SDL_Event const& event);
 		void	_setActive(bool state);
+		void	_renderText(void);
 	
 	public:
 		void	act(SDL_Event const& event);
@@ -40,6 +41,7 @@ class	TextInput : public Label
 	private:
 		bool	_active;
 		size_t	_maxC;
+		bool	_cursor;
 		SDL_Rect	_hitbox;
 		void*		_validateArg;
 		void		(*_validateFnct)(std::string const& text, void* arg);

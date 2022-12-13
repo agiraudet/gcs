@@ -92,7 +92,7 @@ void	TextInput::_proccesTextInput(SDL_Event const& event)
 		if (event.key.keysym.sym == SDLK_BACKSPACE && this->_text.size() > 0)
 		{
 			this->_text.pop_back();
-			renderText = true;
+			this->_renderText();
 		}
 		else if (event.key.keysym.sym == SDLK_ESCAPE)
 		{
@@ -108,21 +108,26 @@ void	TextInput::_proccesTextInput(SDL_Event const& event)
 	else if (event.type == SDL_TEXTINPUT && this->_text.size() <= this->_maxC)
 	{
 		this->_text += event.text.text;
-		renderText = true;
+		this->_renderText();
 	}
+}
 
-	if (renderText)
+void	TextInput::_renderText(void)
+{
+	bool	empty = false;
+
+	if (this->_active)
+		this->_text += "_";
+	if (this->_text.size() == 0)
 	{
-		bool	minText = false;
-		if (this->_text.size() <= 0)
-		{
-			this->_text = " ";
-			minText = true;
-		}
-		this->_createTex();
-		if (minText)
-			this->_text = "";
+		empty = true;
+		this->_text += " ";
 	}
+	this->_createTex();
+	if (empty)
+		this->_text.pop_back();
+	if (this->_active)
+		this->_text.pop_back();
 }
 
 void	TextInput::onValidation(void (*validateFnct)(std::string const& text, void* arg), void* arg)
@@ -141,4 +146,5 @@ void	TextInput::_setActive(bool state)
 			SDL_StopTextInput();
 	}
 	this->_active = state;
+	this->_renderText();
 }
