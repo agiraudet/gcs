@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:31:06 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 14:16:34 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:40:25 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,12 @@ void	Widget::_createTex(void)
 	if (!this->_ren)
 		return;
 	if (!this->_tex)
+	{
 		this->_tex = SDL_CreateTexture(this->_ren, SDL_PIXELFORMAT_RGBA8888,
 			SDL_TEXTUREACCESS_TARGET, this->_offset.w, this->_offset.h);
+		SDL_SetTextureBlendMode(this->_tex, SDL_BLENDMODE_BLEND);
+	}
+
 }
 
 void	Widget::render()

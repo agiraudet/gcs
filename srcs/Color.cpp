@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:51:15 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/10 14:24:49 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:41:59 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 }
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b)
-: r(r), g(g), b(b), a(0)
+: r(r), g(g), b(b), a(255)
 {
 }
 

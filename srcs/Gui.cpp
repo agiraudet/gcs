@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 09:35:45 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 11:19:07 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:47:02 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ Gui::Gui(SDL_Renderer* ren, int x, int y, int w, int h)
 	this->_ren = ren;
 	this->_guiTex = SDL_CreateTexture(ren, SDL_PIXELFORMAT_RGBA8888,
 			SDL_TEXTUREACCESS_TARGET, w, h);
+	//SDL_SetTextureBlendMode(this->_guiTex, SDL_BLENDMODE_BLEND);
 }
 
 Gui::Gui(Gui const & src)
@@ -45,6 +46,9 @@ Gui & Gui::operator=(Gui const & rhs)
 
 void	Gui::render(void)
 {
+	SDL_SetRenderTarget(this->_ren, this->_guiTex);
+	SDL_SetRenderDrawColor(this->_ren, 0,0,0,0);
+	SDL_RenderClear(this->_ren);
 	for (size_t i = 0; i < this->_widgets.size(); i++)
 	{
 		SDL_SetRenderTarget(this->_ren, this->_guiTex);
