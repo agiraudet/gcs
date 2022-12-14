@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:35:00 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/12 17:06:53 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 15:41:11 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 class	Label : public Widget
 {
 	public:
-		Label(TTF_Font* font, std::string const& text, int x, int y);
-		Label(std::string const& text, int size, int x, int y);
+		Label(TTF_Font* font, std::string const& text, int x, int y, size_t maxC);
+		Label(std::string const& text, int size, int x, int y, size_t maxC);
 		~Label(void);
 
 	private:
@@ -32,11 +32,11 @@ class	Label : public Widget
 
 	protected:
 		void	_draw(void);
-		void	_createTex(void);
 		void	_resizeFromText(void);
 
 	public:
 		void	setText(std::string const& text);
+		void	delTextTex(void);
 
 	public:
 		Color		color;
@@ -45,6 +45,8 @@ class	Label : public Widget
 		int			_size;
 		std::string	_text;
 		TTF_Font*	_font;
+		SDL_Texture*	_textTex;
+		size_t			_maxC;
 };
 
 #endif

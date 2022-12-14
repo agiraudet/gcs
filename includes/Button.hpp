@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:42:59 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 19:42:00 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 10:48:48 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class	Button : public Widget
 		Button & operator=(Button const & rhs);
 
 	public:
-		void	act(SDL_Event const& event);
+		void	act(SDL_Event const& event, int offsetX, int offsetY);
 		void	onClic(void (*clicFnct)(void *arg), void* arg);
 
 	private:

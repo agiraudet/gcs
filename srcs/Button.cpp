@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:42:46 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 19:42:25 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 14:10:15 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,13 @@ void	Button::_draw(void)
 	SDL_SetRenderTarget(this->_ren, this->_texOff);
 	SDL_SetRenderDrawColor(this->_ren, this->colorOff.r, this->colorOff.g, this->colorOff.b, this->colorOff.a);
 	SDL_RenderFillRect(this->_ren, NULL);
-	SDL_SetRenderTarget(this->_ren, NULL);
 }
 
-void	Button::act(SDL_Event const& event)
+void	Button::act(SDL_Event const& event, int offsetX, int offsetY)
 {
 	if (event.type == SDL_MOUSEBUTTONDOWN
 		&& event.button.button == SDL_BUTTON_LEFT
-		&& collide(event.motion.x, event.motion.y, this->_rect))
+		&& collide(event.motion.x - offsetX, event.motion.y - offsetY, this->_rect))
 	{
 		this->_tex = this->_texOn;
 		if (this->_clicFnct)

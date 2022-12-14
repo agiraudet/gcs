@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:23:50 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/12 11:48:47 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 10:46:41 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ class	Elem
 
 	public:
 		virtual void	render(void) = 0;
-		virtual void	act(SDL_Event const& event);
+		virtual void	act(SDL_Event const& event, int offsetX, int offsetY);
 		void			addWidget(Widget* widget);
 		SDL_Renderer*	getRen(void);
 		void			setRen(SDL_Renderer *ren);
-		void			passEvent(SDL_Event const& event);
+		void			passEvent(SDL_Event const& event, int offsetX, int offsetY);
 		void			alignPos(SDL_Rect* parent);
 		void			resize(int w, int h);
 	

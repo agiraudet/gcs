@@ -15,21 +15,19 @@
 #include "utils.hpp"
 
 TextInput::TextInput(void)
-: Label("", 12, 0, 0)
+: Label("", 12, 0, 0, 80)
 {
 	this->_active = false;
-	this->_maxC = 80;
 	this->_validateFnct = NULL;
 	this->_validateArg = NULL;
 	setRect(this->_hitbox, 0, 0,
 			static_cast<int>(this->_maxC * (this->_size/2)), this->_size);
 }
 
-TextInput::TextInput(std::string const& text, int size, size_t maxC, int x, int y)
-: Label(text, size, x, y)
+TextInput::TextInput(std::string const& text, int size, int x, int y, size_t maxC)
+: Label(text, size, x, y, maxC)
 {
 	this->_active = false;
-	this->_maxC = maxC;
 	this->_validateFnct = NULL;
 	this->_validateArg = NULL;
 	setRect(this->_hitbox, 0, 0,
@@ -37,17 +35,16 @@ TextInput::TextInput(std::string const& text, int size, size_t maxC, int x, int 
 }
 
 TextInput::TextInput(SDL_Rect const& hitbox)
-: Label("", hitbox.h - 4, hitbox.x, hitbox.y)
+: Label("", hitbox.h - 4, hitbox.x, hitbox.y, hitbox.w / ((hitbox.h-2)/2))
 {
 	this->_active = false;
-	this->_maxC = hitbox.w / ((hitbox.h - 2) / 2);
 	this->_validateFnct = NULL;
 	this->_validateArg = NULL;
 	assignRect(hitbox, this->_hitbox);
 }
 
 TextInput::TextInput(TextInput const & src)
-: Label("",12,  0, 0)
+: Label("",12,  0, 0, 80)
 {
 	*this = src;
 }
@@ -68,7 +65,7 @@ TextInput & TextInput::operator=(TextInput const & rhs)
 	return *this;
 }
 
-void	TextInput::act(SDL_Event const& event)
+void	TextInput::act(SDL_Event const& event, int offsetX, int offsetY)
 {
 	if ((event.type == SDL_KEYDOWN || event.type == SDL_TEXTINPUT) && this->_active)
 		this->_proccesTextInput(event);
@@ -76,7 +73,7 @@ void	TextInput::act(SDL_Event const& event)
 	{
 		this->_hitbox.x = this->_rect.x;
 		this->_hitbox.y = this->_rect.y;
-		if (collide(event.motion.x, event.motion.y, this->_hitbox))
+		if (collide(event.motion.x - offsetX, event.motion.y - offsetY, this->_hitbox))
 			this->_setActive(true);
 		else
 			this->_setActive(false);
@@ -105,7 +102,7 @@ void	TextInput::_proccesTextInput(SDL_Event const& event)
 				this->_validateFnct(this->_text, this->_validateArg);
 		}
 	}
-	else if (event.type == SDL_TEXTINPUT && this->_text.size() <= this->_maxC)
+	else if (event.type == SDL_TEXTINPUT && this->_text.size() < this->_maxC -1)
 	{
 		this->_text += event.text.text;
 		this->_renderText();
@@ -123,7 +120,14 @@ void	TextInput::_renderText(void)
 		empty = true;
 		this->_text += " ";
 	}
-	this->_createTex();
+
+	if (this->_textTex)
+		SDL_DestroyTexture(this->_textTex);
+	SDL_Color sdlColor = {this->color.r, this->color.g, this->color.b, this->color.a};
+	SDL_Surface*	surfTxt = TTF_RenderText_Solid(this->_font, this->_text.c_str(), sdlColor);
+	this->_textTex = SDL_CreateTextureFromSurface(this->_ren, surfTxt);
+	SDL_FreeSurface(surfTxt);
+
 	if (empty)
 		this->_text.pop_back();
 	if (this->_active)
@@ -146,5 +150,11 @@ void	TextInput::_setActive(bool state)
 			SDL_StopTextInput();
 	}
 	this->_active = state;
+	this->_renderText();
+}
+
+void	TextInput::changeText(std::string const& text)
+{
+	this->_text = text;
 	this->_renderText();
 }

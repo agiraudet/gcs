@@ -6,7 +6,7 @@
 #    By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/06 15:43:27 by agiraude          #+#    #+#              #
-#    Updated: 2022/12/13 10:54:30 by agiraude         ###   ########.fr        #
+#    Updated: 2022/12/14 11:20:20 by agiraude         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,7 @@ BUILD_DIR	:=	./build
 
 SRCS_DIR	:=	./srcs
 
-SRCS		:=	example.cpp \
-				Elem.cpp \
+SRCS		:=	Elem.cpp \
 				Widget.cpp \
 				Button.cpp \
 				Color.cpp \
@@ -28,10 +27,19 @@ SRCS		:=	example.cpp \
 				Label.cpp \
 				TextInput.cpp \
 				TextField.cpp \
+				Gui.cpp \
 				Frame.cpp \
 				utils.cpp
 
+SRCS_GUI	:=	exampleGui.cpp
+
+SRCS_ROOT	:=	exampleRoot.cpp
+
 OBJS		:=	$(SRCS:%.cpp=$(BUILD_DIR)/%.o)
+
+OBJS_GUI	:=	$(SRCS_GUI:%.cpp=$(BUILD_DIR)/%.o)
+
+OBJS_ROOT	:=	$(SRCS_ROOT:%.cpp=$(BUILD_DIR)/%.o)
 
 INC_DIRS	:=	./includes
 
@@ -41,8 +49,13 @@ CXXFLAGS	:=	-MD -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable
 
 CXX			:=	clang++
 
-$(NAME): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(OBJS) $(DEPS) -o $@
+$(NAME): gui root
+
+gui: $(OBJS) $(OBJS_GUI)
+	$(CXX) $(CXXFLAGS) $(OBJS) $(OBJS_GUI) $(DEPS) -o exampleGui
+
+root: $(OBJS) $(OBJS_ROOT)
+	$(CXX) $(CXXFLAGS) $(OBJS) $(OBJS_ROOT) $(DEPS) -o exampleRoot
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -57,6 +70,8 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f exampleRoot
+	rm -f exampleGui
 
 re: fclean all
 

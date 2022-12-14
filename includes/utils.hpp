@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:09:30 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 13:11:20 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 13:56:16 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ void	setRect(SDL_Rect& rect, int x, int y, int w, int h);
 void	assignRect(SDL_Rect const& src, SDL_Rect& dst);
 bool	collide(int x, int y, SDL_Rect const& rect);
 void	setPos(SDL_Rect* dst, SDL_Rect* self, SDL_Rect *pos, int const& flag);
+void	debugEvent(SDL_Event const& event, int offx, int offy);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:41:11 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/13 11:24:46 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:06:22 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ class	TextField : public Frame
 
 	public:
 		void	onValidation(void (*validateFnct)(std::string const& text, void* arg), void* arg);
+		void	setText(std::string const& text);
 	private:
 		TextField(void);
 	

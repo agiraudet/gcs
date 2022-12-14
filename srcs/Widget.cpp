@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:31:06 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/12 11:35:47 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 14:16:34 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,14 @@ bool	Widget::getVis(void) const
 
 void	Widget::redraw(void)
 {
+	SDL_Texture*	prevTarget = SDL_GetRenderTarget(this->_ren);
 	if (!this->_tex)
 		this->_createTex();
+	SDL_SetRenderTarget(this->_ren, this->_tex);
+	SDL_SetRenderDrawColor(this->_ren,0,0,0,0);
+	SDL_RenderClear(this->_ren);
 	this->_draw();
+	SDL_SetRenderTarget(this->_ren, prevTarget);
 }
 
 void	Widget::_createTex(void)
@@ -86,13 +91,14 @@ void	Widget::_createTex(void)
 
 void	Widget::render()
 {
-	if (!this->_tex)
+	this->redraw();
+	SDL_Texture*	prevTarget = SDL_GetRenderTarget(this->_ren);
+	for (size_t i = 0; i < this->_widgets.size(); i++)
 	{
-		this->_createTex();
-		this->_draw();
+		SDL_SetRenderTarget(this->_ren, this->_tex);
+		this->_widgets[i]->render();
 	}
+	SDL_SetRenderTarget(this->_ren, prevTarget);
 	if (this->_visible)
 		SDL_RenderCopy(this->_ren, this->_tex, NULL, &this->_rect);
-	for (size_t i = 0; i < this->_widgets.size(); i++)
-		this->_widgets[i]->render();
 }

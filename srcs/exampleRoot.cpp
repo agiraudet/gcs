@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   example.cpp                                        :+:      :+:    :+:   */
+/*   exampleRoot.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:57:37 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/13 11:22:38 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:20:32 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ void	waitInput(Root& root, bool& loop)
 {
 	SDL_Event	event;
 
+	root.render();
 	while (loop)
 	{
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT)
 			break;
-		root.passEvent(event);
+		root.passEvent(event, 0,0);
 		root.render();
 		SDL_Delay(10);
 	}
@@ -76,7 +77,7 @@ int main(void)
 	bool	loop = true;
 	Root	root(720, 480);
 
-	Label	title("GCSI EXAMPLE", 25, 10, 0);
+	Label	title("GCSI EXAMPLE", 25, 0, 10, 0);
 	title.color = Color(255,255,255);
 	title.pos = POSX_CENTER | POSY_TOP;
 	root.addWidget(&title);
@@ -86,7 +87,7 @@ int main(void)
 	bloc1.pos = POSY_CENTER | POSX_LEFT;
 	root.addWidget(&bloc1);
 
-	Label	bloc1Label("Bloc 1", 20, 0, 10);
+	Label	bloc1Label("Bloc 1", 20, 0, 10, 0);
 	bloc1Label.color = Color(255,0,255);
 	bloc1Label.pos = POSY_TOP | POSX_CENTER;
 	bloc1.addWidget(&bloc1Label);
@@ -104,7 +105,7 @@ int main(void)
 		butt->onClic(&changeColor, (void*)&bloc2);
 		bloc1.addWidget(butt);
 
-		Label	*lab = new Label("button", 16, 0, 0);
+		Label	*lab = new Label("button", 16, 0, 0, 0);
 		lab->color = Color(0,0,0);
 		lab->pos = POSY_CENTER | POSX_CENTER;
 		butt->addWidget(lab);
@@ -118,7 +119,7 @@ int main(void)
 	bloc4.pos = POSX_RIGHT | POSY_CENTER;
 	root.addWidget(&bloc4);
 
-	Label	bloc4Label("Bloc 2", 20, 0, -10);
+	Label	bloc4Label("Bloc 2", 20, 0, -10, 0);
 	bloc4Label.color = Color(0,255,0);
 	bloc4Label.pos = POSY_BOTTOM | POSX_CENTER;
 	bloc4Label.setVis(false);
@@ -131,7 +132,7 @@ int main(void)
 	buttToggle->onClic(&toggleVis, (void*)&bloc4);
 	root.addWidget(buttToggle);
 
-	Label*	quitLab = new Label("toggle", 22, 0, 0);
+	Label*	quitLab = new Label("toggle", 22, 0, 0, 0);
 	quitLab->color = Color(255,0,0);
 	quitLab->pos = POSX_CENTER | POSY_CENTER;
 	buttToggle->addWidget(quitLab);
@@ -142,7 +143,7 @@ int main(void)
 	quit.pos = POSX_RIGHT | POSY_TOP;
 	quit.onClic(&toggleLoop, (void*)&loop);
 	
-	Label	b3lab("X", 28, 0, 0);
+	Label	b3lab("X", 28, 0, 0, 0);
 	b3lab.pos = POSX_CENTER | POSY_CENTER;
 	b3lab.color = Color(0,0,0);
 

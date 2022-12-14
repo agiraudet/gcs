@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:35:00 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/13 13:33:35 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 16:09:36 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 class	TextInput : public Label
 {
 	public:
-		TextInput(std::string const& text, int size, size_t maxC, int x, int y);
+		TextInput(std::string const& text, int size, int x, int y, size_t maxC);
 		TextInput(SDL_Rect const& hitbox);
 		~TextInput(void);
 
@@ -35,13 +35,12 @@ class	TextInput : public Label
 		void	_renderText(void);
 	
 	public:
-		void	act(SDL_Event const& event);
+		void	act(SDL_Event const& event, int offsetX, int offsetY);
 		void	onValidation(void (*validateFnct)(std::string const& text, void* arg), void* arg);
+		void	changeText(std::string const& text);
 	
 	private:
 		bool	_active;
-		size_t	_maxC;
-		bool	_cursor;
 		SDL_Rect	_hitbox;
 		void*		_validateArg;
 		void		(*_validateFnct)(std::string const& text, void* arg);

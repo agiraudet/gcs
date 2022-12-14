@@ -4,3 +4,6 @@ example
 gui
 doc
 doxyconf
+tags
+exampleGui
+exampleRoot

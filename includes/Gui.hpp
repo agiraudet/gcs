@@ -1,45 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Root.hpp                                           :+:      :+:    :+:   */
+/*   Gui.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/11 15:13:35 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 10:49:54 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/14 09:28:56 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/14 09:43:18 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ROOT_HPP
-# define ROOT_HPP
+#ifndef GUI_HPP
+# define GUI_HPP
 
 # include "Elem.hpp"
-# include "SDL2/SDL_ttf.h"
-# include "Color.hpp"
 
-class	Root : public Elem
+class	Gui : public Elem
 {
 	public:
-		Root(void);
-		Root(int x, int y);
-		~Root(void);
-	
+		Gui(SDL_Renderer* ren, int x, int y, int w, int h);
+		Gui(Gui const & src);
+		~Gui(void);
+
 	public:
 		void	render(void);
-		void	act(SDL_Event const& event, int offsetX, int offsetY);
-	
-	public:
-		Color	color;
+		
+	private:
+		Gui(void);
+		Gui & operator=(Gui const & rhs);
 
 	private:
-		Root(Root const & src);
-		Root & operator=(Root const & rhs);
-
-	private:
-		void	_createWin(void);
-	
-	private:
-		SDL_Window*	_win;
+		SDL_Texture	*_guiTex;
 };
 
 #endif

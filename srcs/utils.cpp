@@ -6,12 +6,13 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:19:12 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/11 13:11:37 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/14 14:10:24 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "SDL2/SDL.h"
 #include "utils.hpp"
+#include <iostream>
 
 void	setRect(SDL_Rect& rect, int x, int y, int w, int h)
 {
@@ -56,4 +57,12 @@ void	setPos(SDL_Rect* dst, SDL_Rect* self, SDL_Rect *pos, int const& flag)
 		pos->y = dst->y + (dst->h / 2 - self->h / 2);
 	if (flag & POSY_BOTTOM)
 		pos->y = dst->y + dst->h - self->h;
+}
+
+void	debugEvent(SDL_Event const& event, int offx, int offy)
+{
+	if (event.type != SDL_MOUSEBUTTONDOWN)
+		return;
+	std::cout << "realPos: " << event.motion.x << "," << event.motion.y;
+	std::cout << " + (" << offx << "," << offy << ")" << std::endl;
 }
