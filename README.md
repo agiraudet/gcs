@@ -10,11 +10,17 @@ You can simply copy the classes you need in your project directory and call it a
 Or you can compile it as a library using the provided Makefile, then copy libgcs.a in you (distro-dependant) standard library path, and do the same with the includes folder.
 For example, on Fedora, libgcs.a would go in /user/lib/ and the content of the include folder in /usr/include/gcs/
 
-In the code of the project, you should then be able to simply use `#include "gcs/gcs.hpp"` to acces any GCS class.
+In the code of the project, you should then be able to simply use
+```
+#include "gcs/gcs.hpp"
+```
+to acces any GCS class.
 
 # Examples
 GCS is provided with examples. To try them out, simply run
-`Make example`
+```
+Make example
+```
 You should endup with exampleGui and exampleRoot, two executable demonstrating the usage of theGCS classes based either on a Root or a Gui instance.
 Look at the source code located in srcs/exampleGui.cpp and srcs/exampleRoot.cpp for more info.
 
@@ -25,11 +31,13 @@ I would advise to take a simple on as a template, and building your own ones upo
 # Compiling
 GCS use SDL2 and SDL2_ttf, so those should be installed on you machine.
 If you have installed GCS in you standard library path, you should be able to compile you project with something like this :
-`clang++ myproject.cpp -o myproject -lSDL2 -lSDL2_ttf -lgcs`
+```
+clang++ myproject.cpp -o myproject -lSDL2 -lSDL2_ttf -lgcs
+```
 For other usecase, look at the provided Makefile as a example.
 
 # Documentation
-The Doc is not really done yet, but you can look a the most important part of it [here](todo.com)
+The Doc is not really done yet, but you can look a the most important part of it by opening doc/html/index.html in your browser.
 
 # TODO next
 * add comments to the examples
