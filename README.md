@@ -1,3 +1,5 @@
+![DemoPic](https://raw.githubusercontent.com/agiraudet/gcs/main/doc/demo.png?token=GHSAT0AAAAAABYP73ZRDA2RUIKHLI6WBXI4Y43HRGQ)
+
 # What is GCS ?
 GCS is a set of C++ classes. It's purpose is to allow the user to put together the most basic possible GUI in a SDL2 project. This can either be done on top of a existing SDL2 context, or as a standalone.
 GCS stand for GUI Components for SDL. Also for "Garde ça simple." Meaning "Keep it simple".
