@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Color.hpp                                          :+:      :+:    :+:   */
+/*   gcs.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/10 13:49:50 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/10 14:28:44 by agiraude         ###   ########.fr       */
+/*   Created: 2022/12/15 14:54:21 by agiraude          #+#    #+#             */
+/*   Updated: 2022/12/15 14:56:22 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COLOR_HPP
-# define COLOR_HPP
+#ifndef GCS_HPP
+# define GCS_HPP
 
-# include "SDL2/SDL.h"
-
-class	Color
-{
-	public:
-		Color(void);
-		Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-		Color(Uint8 r, Uint8 g, Uint8 b);
-		Color(Color const & src);
-		~Color(void);
-		
-	public:
-		Color & operator=(Color const & rhs);
-
-	public:
-		Uint8	r;
-		Uint8	g;
-		Uint8	b;
-		Uint8	a;
-};
+# include "Bloc.hpp"
+# include "Button.hpp"
+# include "Elem.hpp"
+# include "Frame.hpp"
+# include "Gui.hpp"
+# include "Label.hpp"
+# include "Root.hpp"
+# include "TextField.hpp"
+# include "TextInput.hpp"
+# include "utils.hpp"
+# include "Widget.hpp"
 
 #endif

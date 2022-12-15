@@ -2,7 +2,7 @@ build
 test
 example
 gui
-doc
+doc/doxy
 doxyconf
 tags
 exampleGui

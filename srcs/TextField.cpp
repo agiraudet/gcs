@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 10:42:53 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 16:21:13 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:41:35 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ TextField::TextField(int x, int y, int w, int h)
 {
 	SDL_Rect	hitbox = {6,0,w,h};
 	TextInput*	textInput = new TextInput(hitbox);
-	textInput->color = Color(255,255,255);
-	textInput->pos = POSY_CENTER;
+	textInput->setColor(255,255,255);
+	textInput->setPos(POSY_CENTER);
 	this->addWidget(textInput);
 	this->_input = textInput;
 }

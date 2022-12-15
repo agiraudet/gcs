@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:42:46 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 14:25:35 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:26:24 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,11 @@ Frame & Frame::operator=(Frame const & rhs)
 {
 	if (this == &rhs)
 		return *this;
-	this->color = rhs.color;
 	return *this;
 }
 
 void	Frame::_draw(void)
 {
-	SDL_SetRenderDrawColor(this->_ren, this->color.r, this->color.g, this->color.b, this->color.a);
+	SDL_SetRenderDrawColor(this->_ren, this->_color.r, this->_color.g, this->_color.b, this->_color.a);
 	SDL_RenderDrawRect(this->_ren, NULL);
 }

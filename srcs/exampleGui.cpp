@@ -6,18 +6,12 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/14 09:43:36 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 16:42:54 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:56:55 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Gui.hpp"
-#include "Label.hpp"
-#include "Bloc.hpp"
-#include "Frame.hpp"
-#include "Button.hpp"
-#include "utils.hpp"
-#include "TextField.hpp"
 #include <iostream>
+#include "gcs.hpp"
 
 #define SCWD 720
 #define SCHG 480
@@ -54,7 +48,6 @@ void	changeLabel(void *arg)
 
 	lab->setText((i ? "YO" : "this is a test"));
 	i ^= 1;
-	lab->delTextTex();
 }
 
 int main()
@@ -90,35 +83,35 @@ int main()
 	Gui	gui(ren, 0, 0, SCWD / 2, SCHG);
 
 	Bloc	bloc(0,50,200,200);
-	bloc.color = Color(255,255,0);
-	bloc.pos = POSX_RIGHT;
+	bloc.setColor(255,255,0);
+	bloc.setPos(POSX_RIGHT);
 	gui.addWidget(&bloc);
 
 	Label	label("Right aligned bloc", 16, 0, 0, 0);
-	label.pos = POSX_CENTER | POSY_TOP;
-	label.color = Color(255,0,0);
+	label.setPos(POSX_CENTER | POSY_TOP);
+	label.setColor(255,0,0);
 	bloc.addWidget(&label);
 
 	Bloc	bloc2(5,-5,400,50);
-	bloc2.color = Color(255,0,0);
-	bloc2.pos = POSY_BOTTOM | POSX_LEFT;
+	bloc2.setColor(255,0,0);
+	bloc2.setPos(POSY_BOTTOM | POSX_LEFT);
 	bloc.addWidget(&bloc2);
 
 	Button	test(0,-5,50,50);
-	test.colorOn = Color(200,200,200);
-	test.colorOff = Color(100,100,100);
+	test.setColorOn(200,200,200);
+	test.setColor(100,100,100);
 	test.onClic(&changeLabel, (void*)&label);
-	test.pos = POSX_CENTER | POSY_BOTTOM;
+	test.setPos(POSX_CENTER | POSY_BOTTOM);
 
 	Bloc	bloc3(0,30,60,300);
-	bloc3.color = Color(0,0,255);
-	bloc3.pos = POSX_LEFT;
+	bloc3.setColor(0,0,255);
+	bloc3.setPos(POSX_LEFT);
 	bloc3.addWidget(&test);
 	gui.addWidget(&bloc3);
 
 	TextField	f(20, -5, 150, 26);
-	f.pos = POSY_BOTTOM | POSX_LEFT;
-	f.color = Color(255,0,255);
+	f.setPos(POSY_BOTTOM | POSX_LEFT);
+	f.setColor(255,0,255);
 	f.onValidation(&printText, &f);
 	gui.addWidget(&f);
 

@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:35:00 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 16:09:36 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:39:44 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ class	TextInput : public Label
 		void	_proccesTextInput(SDL_Event const& event);
 		void	_setActive(bool state);
 		void	_renderText(void);
+		void	_act(SDL_Event const& event, int offsetX, int offsetY);
 	
 	public:
-		void	act(SDL_Event const& event, int offsetX, int offsetY);
 		void	onValidation(void (*validateFnct)(std::string const& text, void* arg), void* arg);
 		void	changeText(std::string const& text);
 	

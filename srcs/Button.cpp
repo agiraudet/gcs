@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:42:46 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 14:10:15 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:37:09 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ Button::Button(int x, int y, int w, int h)
 	this->_texOff = NULL;
 	this->_clicFnct = NULL;
 	this->_clicArg = NULL;
-	this->colorOn = Color(50,50,50);
-	this->colorOff = Color(75,75,75);
+	this->setColorOn(50,50,50);
 }
 
 Button::Button(Button const & src)
@@ -43,8 +42,7 @@ Button & Button::operator=(Button const & rhs)
 	if (this == &rhs)
 		return *this;
 	assignRect(rhs._rect, this->_rect);
-	this->colorOn = rhs.colorOn;
-	this->colorOff = rhs.colorOff;
+	this->setColorOn(rhs._colorOn.r, rhs._colorOn.g, rhs._colorOn.b);
 	this->_clicFnct = rhs._clicFnct;
 	this->_clicArg = rhs._clicArg;
 	this->_createTex();
@@ -67,14 +65,14 @@ void	Button::_createTex(void)
 void	Button::_draw(void)
 {
 	SDL_SetRenderTarget(this->_ren, this->_texOn);
-	SDL_SetRenderDrawColor(this->_ren, this->colorOn.r, this->colorOn.g, this->colorOn.b, this->colorOn.a);
+	SDL_SetRenderDrawColor(this->_ren, this->_colorOn.r, this->_colorOn.g, this->_colorOn.b, this->_colorOn.a);
 	SDL_RenderFillRect(this->_ren, NULL);
 	SDL_SetRenderTarget(this->_ren, this->_texOff);
-	SDL_SetRenderDrawColor(this->_ren, this->colorOff.r, this->colorOff.g, this->colorOff.b, this->colorOff.a);
+	SDL_SetRenderDrawColor(this->_ren, this->_color.r, this->_color.g, this->_color.b, this->_color.a);
 	SDL_RenderFillRect(this->_ren, NULL);
 }
 
-void	Button::act(SDL_Event const& event, int offsetX, int offsetY)
+void	Button::_act(SDL_Event const& event, int offsetX, int offsetY)
 {
 	if (event.type == SDL_MOUSEBUTTONDOWN
 		&& event.button.button == SDL_BUTTON_LEFT
@@ -95,4 +93,12 @@ void	Button::onClic(void (*clicFnct)(void *arg), void* arg)
 {
 	this->_clicArg = arg;
 	this->_clicFnct = clicFnct;
+}
+
+void	Button::setColorOn(Uint8 r, Uint8 g, Uint8 b)
+{
+	this->_colorOn.r = r;
+	this->_colorOn.g = g;
+	this->_colorOn.b = b;
+	this->_colorOn.a = this->_color.a;
 }

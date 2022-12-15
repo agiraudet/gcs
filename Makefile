@@ -6,11 +6,11 @@
 #    By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/06 15:43:27 by agiraude          #+#    #+#              #
-#    Updated: 2022/12/14 11:20:20 by agiraude         ###   ########.fr        #
+#    Updated: 2022/12/15 15:10:15 by agiraude         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		:=	example
+NAME		:=	libgcs.a
 
 DEPS		:=	-lSDL2 -lSDL2_ttf
 
@@ -21,7 +21,6 @@ SRCS_DIR	:=	./srcs
 SRCS		:=	Elem.cpp \
 				Widget.cpp \
 				Button.cpp \
-				Color.cpp \
 				Bloc.cpp \
 				Root.cpp \
 				Label.cpp \
@@ -49,7 +48,10 @@ CXXFLAGS	:=	-MD -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable
 
 CXX			:=	clang++
 
-$(NAME): gui root
+$(NAME): $(OBJS)
+	ar rcs $(NAME) $(OBJS)
+
+example: gui root
 
 gui: $(OBJS) $(OBJS_GUI)
 	$(CXX) $(CXXFLAGS) $(OBJS) $(OBJS_GUI) $(DEPS) -o exampleGui

@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 14:36:44 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 16:19:32 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:21:33 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ Label & Label::operator=(Label const & rhs)
 	if (this == &rhs)
 		return *this;
 	this->_text = rhs._text;
-	this->color = rhs.color;
 	this->_font = rhs._font;
 	this->_size = rhs._size;
 	this->_maxC = rhs._maxC;
@@ -73,9 +72,7 @@ void	Label::_draw(void)
 		this->_createTex();
 	if (!this->_textTex)
 	{
-		SDL_Color sdlColor = {this->color.r, this->color.g, this->color.b, this->color.a};
-
-		SDL_Surface*	surfTxt = TTF_RenderText_Solid(this->_font, this->_text.c_str(), sdlColor);
+		SDL_Surface*	surfTxt = TTF_RenderText_Solid(this->_font, this->_text.c_str(), this->_color);
 		this->_textTex = SDL_CreateTextureFromSurface(this->_ren, surfTxt);
 		SDL_FreeSurface(surfTxt);
 	}
@@ -88,9 +85,10 @@ void	Label::_draw(void)
 void	Label::setText(std::string const& text)
 {
 	this->_text = text;
+	this->_delTextTex();
 }
 
-void	Label::delTextTex(void)
+void	Label::_delTextTex(void)
 {
 	SDL_DestroyTexture(this->_textTex);
 	this->_textTex = NULL;

@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:31:06 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/14 16:40:25 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:21:01 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 Widget::Widget(void)
 : _tex(NULL), _visible(true)
 {
+	this->setColor(150,150,150,255);
 }
 
 Widget::Widget(int x, int y)
@@ -22,6 +23,7 @@ Widget::Widget(int x, int y)
 {
 	this->_tex = NULL;
 	this->_visible = true;
+	this->setColor(150,150,150,255);
 }
 
 Widget::Widget(int x, int y, int w, int h)
@@ -29,6 +31,7 @@ Widget::Widget(int x, int y, int w, int h)
 {
 	this->_tex = NULL;
 	this->_visible = true;
+	this->setColor(150,150,150,255);
 }
 
 Widget::Widget(Widget const & src)
@@ -48,19 +51,13 @@ Widget & Widget::operator=(Widget const & rhs)
 		return *this;
 	this->_tex = rhs._tex;
 	this->_visible = rhs._visible;
+	this->setColor(rhs._color.r, rhs._color.g, rhs._color.b, rhs._color.a);
 	return *this;
 }
 
 void	Widget::setVis(bool vis)
 {
 	this->_visible = vis;
-}
-
-void	Widget::setVisAll(bool vis)
-{
-	this->_visible = vis;
-	for (size_t i = 0; i < this->_widgets.size(); i++)
-		this->_widgets[i]->setVis(vis);
 }
 
 bool	Widget::getVis(void) const
@@ -105,4 +102,17 @@ void	Widget::render()
 	SDL_SetRenderTarget(this->_ren, prevTarget);
 	if (this->_visible)
 		SDL_RenderCopy(this->_ren, this->_tex, NULL, &this->_rect);
+}
+
+void	Widget::setColor(Uint8 r, Uint8 g, Uint8 b)
+{
+	this->setColor(r, g, b, 255);
+}
+
+void	Widget::setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+{
+	this->_color.r = r;
+	this->_color.g = g;
+	this->_color.b = b;
+	this->_color.a = a;
 }

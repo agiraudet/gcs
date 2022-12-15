@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:23:50 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/12 13:37:17 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/15 13:54:06 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 /**
  * This class is the basic building bloc for a gcsi Gui. It handle the drawing
  * of an element to the screen.
+ * Add interfaces to the Elem class.
  */
 class	Widget : public Elem
 {
@@ -52,49 +53,35 @@ class	Widget : public Elem
 		virtual ~Widget(void);
 		
 	public:
-		/** Widget assignation operator */
 		Widget & operator=(Widget const & rhs);
 
 	public:
-		/// Blit the widget Texture to the Renderer
+		/// Blit the the texture of every childs to the texture of the Widget
 		void			render(void);
 
 		/// Redraw the widget to his Texture
-		/**
-		 * Create the widget Texture if it does not already exist, then draw the
-		 * widget on it using it's current parameters.
-		 */
 		void			redraw(void);
 
 		/// Change the widget visibility to vis
 		void			setVis(bool vis);
 
-		/// Change the widget and all of its childrens visibily to vis
-		void			setVisAll(bool vis);
-
 		/// Return the widget current visibility
 		bool			getVis(void) const;
 
-	protected:
-		/// Create the widget Texture
-		/**
-		 * Use the SDL_Renderer pointed to by the _ren member of the Elem part
-		 * of the widget, and crate a texture of a size defined by the _rect
-		 * member of the widget.
-		 * This function can be overloaded to allow for different kind of
-		 * Texture cration.
-		 */
-		virtual void	_createTex(void);
+		/// Change the widget color using RGB value (0-255)
+		void			setColor(Uint8 r, Uint8 g, Uint8 b);
 
-		/// Method allowing a Widget to be drawn on to its Texture
+		/// Change the widget color using RGB + Alpha value (0-255)
+		void			setColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+
+	protected:
+		virtual void	_createTex(void);
 		virtual void	_draw(void) = 0;
 	
 	protected:
-		/// Pointer to the widget Texture
 		SDL_Texture*	_tex;
-
-		/// Defining if the Widget should be rendered on screen.
 		bool			_visible;
+		SDL_Color		_color;
 };
 
 #endif

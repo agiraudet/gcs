@@ -65,7 +65,7 @@ TextInput & TextInput::operator=(TextInput const & rhs)
 	return *this;
 }
 
-void	TextInput::act(SDL_Event const& event, int offsetX, int offsetY)
+void	TextInput::_act(SDL_Event const& event, int offsetX, int offsetY)
 {
 	if ((event.type == SDL_KEYDOWN || event.type == SDL_TEXTINPUT) && this->_active)
 		this->_proccesTextInput(event);
@@ -123,8 +123,7 @@ void	TextInput::_renderText(void)
 
 	if (this->_textTex)
 		SDL_DestroyTexture(this->_textTex);
-	SDL_Color sdlColor = {this->color.r, this->color.g, this->color.b, this->color.a};
-	SDL_Surface*	surfTxt = TTF_RenderText_Solid(this->_font, this->_text.c_str(), sdlColor);
+	SDL_Surface*	surfTxt = TTF_RenderText_Solid(this->_font, this->_text.c_str(), this->_color);
 	this->_textTex = SDL_CreateTextureFromSurface(this->_ren, surfTxt);
 	SDL_FreeSurface(surfTxt);
 
