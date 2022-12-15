@@ -45,3 +45,4 @@ The Doc is not really done yet, but you can look a the most important part of it
 * add pictures to the README
 * add new widgets (such as Pictures, Canvas, List, etc)
 * make a real documentation
+* make a proper way to set the used font
