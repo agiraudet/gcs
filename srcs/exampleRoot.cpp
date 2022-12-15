@@ -6,7 +6,7 @@
 /*   By: agiraude <agiraude@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 13:57:37 by agiraude          #+#    #+#             */
-/*   Updated: 2022/12/15 14:57:35 by agiraude         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:19:45 by agiraude         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int main(void)
 	bool	loop = true;
 	Root	root(720, 480);
 
-	Label	title("GCSI EXAMPLE", 25, 0, 10, 0);
+	Label	title("GCS EXAMPLE", 25, 0, 10, 0);
 	title.setColor(255,255,255);
 	title.setPos(POSX_CENTER | POSY_TOP);
 	root.addWidget(&title);
@@ -108,7 +108,7 @@ int main(void)
 	}
 
 	Bloc	bloc4(-5, 0, 200, 400);
-	bloc4.setColor(200,100,0);
+	bloc1.setColor(200,200,200);
 	bloc4.setVis(false);
 	bloc4.setPos(POSX_RIGHT | POSY_CENTER);
 	root.addWidget(&bloc4);

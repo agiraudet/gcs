@@ -1,4 +1,5 @@
 build
+libgcs.a
 test
 example
 gui
